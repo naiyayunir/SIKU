@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agent Performance</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .card-container {
+            margin: auto;
+            width: 80%;
+            padding: 20px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #eeeeef;
+            color: #3c3f61;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #3c3f61;
+            font-weight: bold;
+        }
+
+        .filter-form {
+            margin-bottom: 10px;
+        }
+
+        .filter-label {
+            margin-bottom: 5px;
+        }
+
+        .pesanan-table th {
+            background-color: #3c3f61; 
+            color: #ffffff; 
+            text-align: center !important;
+            vertical-align: middle !important;
+            font-weight: bold;
+        }
+
+        .pesanan-table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .btn-create {
+            margin-top: 20px;
+            float: right;
+        }
+
+        .text-dark {
+            color: #000; /* Black color for Ongoing status */
+        }
+
+        .text-danger {
+            color: #ff0000; /* Red color for Canceled status */
+        }
+
+        .btn-submit {
+            background-color: #3c3f61;
+            color: #fff;
+            width: auto;
+            padding: 5px 10px; /* Sesuaikan padding tombol */
+            font-size: 14px; /* Sesuaikan ukuran teks */
+        }
+
+        .btn-submit:hover {
+            background-color: #2e314a;
+        }
+
+        .add-product-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #0e131a;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .text-success {
+            color: #008000;
+        }
+
+        .btn-primary {
+            background-color: #3c3f61;
+            border-color: #3c3f61;
+            padding: 10px 30px;
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #212529; 
+            color: #ffffff; 
+        }
+
+        .btn-search{
+            background-color: #3c3f61;
+            color: #fff;
+        }
+
+
+        .btn-link-secondary {
+        color: gray; /* Or any other secondary color */
+        }
+
+        .btn-link-secondary:hover {
+            color: darkgray; /* Change color on hover */
+        }
+
+
+        .layout_padding {
+            padding: 30px 0;
+        }
+
+        .layout_padding-top {
+            padding-top: 30px;
+        }
+
+        .layout_padding-bottom {
+            padding-bottom: 30px;
+        }
+
+        .layout_margin-top {
+            margin-top: 5px;
+        }
+
+        .layout_margin-bottom {
+            margin-bottom: 5px;
+        }
+
+        .left-top-corner {
+            position: absolute;
+            top: 12%; /* Adjust based on your layout */
+            left: 5%; /* Adjust based on your layout */
+            /* z-index: 1000; Ensure it appears above other elements */
+        }
+
+
+        .left-top-corner .btn-back {
+            background-color: #f8f9fa; /* Background color */
+            color: #3c3f61; /* Text color */
+            padding: 8px 12px; /* Button padding */
+            border-radius: 5px; /* Button corner shape */
+            text-decoration: none; /* Remove underline */
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition for background color and text color */
+        }
+
+        .left-top-corner .btn-back:hover {
+            background-color: #f8f9fa; /* Background color on hover */
+            color: #eeeeef; /* Text color on hover */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div th:if="${user != null && (user.role == 'hr' || user.role =='admin')}"></div>
+
+    <!-- Navbar -->
+    <div th:switch="${user.role}">
+        <div th:case="'admin'">
+            <nav th:replace="~{fragments/admin_navbar :: admin_navbar}"></nav>
+        </div>
+        <div th:case="'hr'">
+            <nav th:replace="~{fragments/hr_navbar :: hr_navbar}"></nav>
+        </div>
+    </div>
+    
+    <!-- Content -->
+    <div class="card-container layout_padding-top layout_padding-bottom layout_margin-top layout_margin-bottom">
+        <div class="left-top-corner">
+            <a type="button" class="btn btn-back btn-md" th:href="@{/karyawan/{id}(id=${karyawan.id})}"><i class="fas fa-chevron-left"></i></a>
+        </div>  
+        <div class="card">
+            <div class="card-header text-center">
+                <h2 th:text="${karyawan.nama_depan + ' ' + karyawan.nama_belakang + ' Performance'}"></h2>
+            </div>
+            <div class="card-body">
+                <div class="filter-form">
+                    <form th:action="@{/karyawan/performance/{id}(id=${karyawan.id})}" method="get" onsubmit="return validateForm()">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label class="filter-label" for="bulan">Month:</label>
+                                <select name="bulan" id="bulan" class="form-control">
+                                    <option value="">Select Month</option>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label class="filter-label" for="tahun">Year:</label>
+                                <select name="tahun" id="tahun" class="form-control">
+                                    <option value="">Select Year</option>
+                                    <th:block th:each="year : ${#numbers.sequence(2021, T(java.time.Year).now().getValue())}">
+                                        <option th:value="${year}" th:text="${year}"></option>
+                                    </th:block>
+                                </select>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label class="filter-label" for="statusPesanan">Order Status:</label>
+                                <select name="statusPesanan" id="statusPesanan" class="form-control">
+                                    <option value="">Select Status</option>
+                                    <option value="Ongoing">Ongoing</option>
+                                    <option value="Complete">Complete</option>
+                                    <option value="Canceled">Canceled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 form-group d-flex align-items-end justify-content-between">
+                                <button type="submit" class="btn btn-search mt-10">Search</button>
+                                <!-- <a href="#" onclick="resetFilters()" class="btn-link-secondary text-decoration-none">
+                                    <i class="fa fa-undo"></i> Reset
+                                </a>                                                              -->
+                            </div>
+                        </div>
+                    </form>
+                </div>                             
+
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-striped table-bordered pesanan-table">
+                        <thead class = "card-header text-center fw-bold" style="background-color: #3c3f61; color: #FFFFFF;" >
+                            <tr>
+                                <th>ID</th>
+                                <th>Client Name</th>
+                                <th>Username Agent</th>
+                                <th data-sort="canceled">Order Status</th>
+                                <th>Product</th>
+                                <th>Total Order Cost</th>
+                                <th>Start Order</th>
+                                <th>Complete Order</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <!-- Data Rows -->
+                            <tr th:each="pesanan : ${pesananList}">
+                                <td th:text="${pesanan.id}">ID</td>
+                                <td th:text="${pesanan.klien.namaKlien}">Client Name</td>
+                                <td th:text="${pesanan.user.username}">Username Agent</td>
+                                <td>
+                                    <span th:text="${pesanan.statusPesanan}"
+                                        th:class="${pesanan.statusPesanan == 'Canceled' ? 'text-danger' : (pesanan.statusPesanan == 'Complete' ? 'text-success' : 'text-dark')}"></span>
+                                </td>
+                                <td th:text="${pesanan.product.namaProduct}">Product</td>
+                                <!-- Format total biaya pesanan -->
+                                <td th:text="'Rp ' + ${#numbers.formatDecimal(pesanan.jumlahBiayaPesanan, 0, 'COMMA', 0, 'POINT')}"</td>
+                                <td th:text="${#dates.format(#dates.create(pesanan.tanggalPemesanan.year, pesanan.tanggalPemesanan.monthValue, pesanan.tanggalPemesanan.dayOfMonth), 'dd-MM-yyyy')}">Start Order</td>
+                                <td th:text="${#dates.format(#dates.create(pesanan.tanggalSelesai.year, pesanan.tanggalSelesai.monthValue, pesanan.tanggalSelesai.dayOfMonth), 'dd-MM-yyyy')}">Complete Order</td>
+                                    
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(pesananList)}">
+                                <td colspan="9" class="text-center">No orders found.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            columnDefs: [
+                { targets: 3, type: 'status-order' }
+            ],
+            order: []
+        });
+
+        // Tambahkan definisi sorting kustom untuk kolom status
+        $.fn.dataTable.ext.type.order['status-order'] = function(settings, col) {
+            return this.api().column(col, { order: 'index' }).nodes().map(function(td, i) {
+                var status = $(td).text();
+                switch (status) {
+                    case 'Ongoing':
+                        return 0;
+                    case 'Complete':
+                        return 1;
+                    case 'Canceled':
+                        return 2;
+                    default:
+                        return 3;
+                }
+            });
+        };
+    });
+    </script>
+    <script>
+        function validateForm() {
+            var bulan = document.getElementById("bulan").value;
+            var tahun = document.getElementById("tahun").value;
+    
+            if (bulan !== "" || tahun !== "") {
+                if (bulan === "" || tahun === "") {
+                    alert("Both month and year must be chosen.");
+                    return false;
+                }
+            }
+    
+            return true;
+        }
+    </script>
+    <!-- <script>
+        function resetFilters() {
+            document.getElementById("bulan").value = "";
+            document.getElementById("tahun").value = "";
+            document.getElementById("statusPesanan").value = "";
+
+            $('#myTable').DataTable().draw();
+        }
+    </script> -->
+</body>
+
+<div th:unless="${user != null && (user.role == 'hr' || user.role =='admin')}">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.location.replace('/no-access');
+        /*]]>*/
+    </script>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-4+qn4Xqf8T5ywBgeA2zKkqG0TVveK/JJfDwrOQ1QhoKqIbcoO8eP1iFs2x7p8jq1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+UAQlFeJK6ZKN1L4y47pDf8xF9+Qz9v5CGI9xgndbcgyksW2JWBUX2+nXk" crossorigin="anonymous"></script>
+
+</html>

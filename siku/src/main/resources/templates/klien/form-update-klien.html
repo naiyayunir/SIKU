@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .card-container {
+            margin: auto;
+            width: 80%;
+            padding: 20px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #eeeeef;
+            color: #3c3f61;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+        .center-button {
+            display: flex;
+            justify-content: center;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .btn-submit {
+            background-color: #3c3f61;
+            color: #ffffff;
+            border-color: #3c3f61;
+            padding: 10px 30px;
+            margin-right: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #525663;
+            color: #ffffff; 
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            padding: 10px 30px;
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+
+        .layout_padding {
+            padding: 30px 0;
+        }
+
+        .layout_padding-top {
+            padding-top: 30px;
+        }
+
+        .layout_padding-bottom {
+            padding-bottom: 30px;
+        }
+
+        .layout_margin-top {
+            margin-top: 5px;
+        }
+
+        .layout_margin-bottom {
+            margin-bottom: 5px;
+        }
+
+        .left-top-corner {
+            position: absolute;
+            top: 12%;
+            left: 5%;
+        }
+
+
+        .left-top-corner .btn-back {
+            background-color: #f8f9fa; 
+            color: #3c3f61; 
+            padding: 8px 12px; 
+            border-radius: 5px; 
+            text-decoration: none; 
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .left-top-corner .btn-back:hover {
+            background-color: #f8f9fa; 
+            color: #eeeeef; 
+        }
+        .h2 {
+            text-align: center;
+            color: #3c3f61;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div th:switch="${user.role}">
+        <div th:case="'admin'">
+            <nav th:replace="~{fragments/admin_navbar :: admin_navbar}"></nav>
+        </div>
+        <div th:case="'operational'">
+            <nav th:replace="~{fragments/operational_navbar :: operational_navbar}"></nav>
+        </div>
+    </div>
+    <div th:if="${user != null && (user.role == 'operational' || user.role =='admin')}">
+    
+    <div class="card-container layout_padding-top layout_padding-bottom layout_margin-top layout_margin-bottom">
+        <div class="left-top-corner">
+            <a type="button" class="btn btn-back btn-md" href="/klien"><i class="fas fa-chevron-left"></i></a>
+        </div>
+        <div class="card">
+            <div class="card-header text-center fw-bold" style="font-size: 24px; background-color: #eeeeef; color:#3c3f61">
+                Update Client
+            </div>
+            <div class="card-body">
+                <form th:action="@{/klien/update/{id}(id=${klien.id})}" th:object="${klienDTO}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+                    <input type="hidden" th:value="${klien.id}" th:field="*{id}" />
+                    <div class="form-group">
+                        <label for="nama-klien" class="form-label">Client Name<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="nama-klien" th:value="${klien.namaKlien}" th:field="*{namaKlien}"/>
+                        <small id="nama-klien-error" class="text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="rumah-sakit" class="form-label">Hospital<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="rumah-sakit" th:field="*{rumahSakit}"/>
+                        <small id="rumah-sakit-error" class="text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="email-klien" class="form-label">Client Email<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="email-klien" th:value="${klien.emailKlien}" th:field="*{emailKlien}"/>
+                        <small id="email-klien-error" class="text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="nohp-klien" class="form-label">Client Phone Number<span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="nohp-klien" th:value="${klien.noHpKlien}" th:field="*{noHpKlien}"/>
+                        <small id="nohp-klien-error" class="text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat-klien" class="form-label">Client Address<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="alamat-klien" th:value="${klien.alamatKlien}" th:field="*{alamatKlien}"/>
+                        <small id="alamat-klien-error" class="text-danger"></small>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-submit">Submit</button>
+                        <a href="/klien" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal Pop-up untuk Klien -->
+<div class="modal fade" id="klienSuccessModal" tabindex="-1" role="dialog" aria-labelledby="klienSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="klienSuccessModalLabel">Success</h5>
+            </div>
+            <div class="modal-body">
+                Client successfully updated.
+            </div>
+            <div class="modal-footer">
+                <span class="click-anywhere-text">Click anywhere to close</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Script untuk menampilkan modal saat klien berhasil diupdate -->
+<script th:inline="javascript">
+    $(document).ready(function() {
+        /* Cek apakah klien baru saja diupdate */
+        var klienUpdated = [[${klienUpdated}]];
+        if (klienUpdated) {
+            /* Jika ya, tampilkan modal */
+            $('#klienSuccessModal').modal('show');
+        }
+
+        // Tambahkan event listener untuk menutup modal saat klik di mana saja
+        $('#klienSuccessModal').click(function(e) {
+            if (e.target === this) {
+                $(this).modal('hide');
+                window.location.href = '/klien'; // Redirect ke halaman /klien
+            }
+        });
+    });
+</script>
+
+        
+
+<script>
+    function validateForm() {
+        var namaKlien = document.getElementById("nama-klien").value;
+        var rumahSakit = document.getElementById("rumah-sakit").value;
+        var emailKlien = document.getElementById("email-klien").value;
+        var noHpKlien = document.getElementById("nohp-klien").value;
+        var alamatKlien = document.getElementById("alamat-klien").value;
+
+        var namaKlienError = document.getElementById("nama-klien-error");
+        var rumahSakitError = document.getElementById("rumah-sakit-error");
+        var emailKlienError = document.getElementById("email-klien-error");
+        var noHpKlienError = document.getElementById("nohp-klien-error");
+        var alamatKlienError = document.getElementById("alamat-klien-error");
+
+        if (namaKlien.trim() === "") {
+            namaKlienError.innerText = "Client Name cannot be empty";
+            return false;
+        } else {
+            namaKlienError.innerText = "";
+        }
+        if (rumahSakit.trim() === "") {
+            rumahSakitError.innerText = "Hospital cannot be empty";
+            return false;
+        } else {
+            rumahSakitError.innerText = "";
+        }
+        if (emailKlien.trim() === "") {
+            emailKlienError.innerText = "Client Email cannot be empty";
+            return false;
+        } else if (!emailKlien.includes("@")) {
+            emailKlienError.innerText = "Invalid Client Email (e.g., example@example.com)";
+            return false;
+        } else {
+            emailKlienError.innerText = "";
+        }
+        if (noHpKlien.trim() === "") {
+            noHpKlienError.innerText = "Client Phone Number cannot be empty";
+            return false;
+        } else if (isNaN(noHpKlien)) {
+            noHpKlienError.innerText = "Client Phone Number must be a number";
+            return false;
+        } else {
+            noHpKlienError.innerText = "";
+        }
+        if (alamatKlien.trim() === "") {
+            alamatKlienError.innerText = "Client Address cannot be empty";
+            return false;
+        } else {
+            alamatKlienError.innerText = "";
+        }
+        return true;
+    }
+</script>
+
+
+
+
+<div th:unless="${user != null && (user.role == 'operational' || user.role =='admin')}">
+    <script th:inline="javascript">
+            /*<![CDATA[*/
+            window.location.replace('/no-access');
+            /*]]>*/
+    </script>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-4+qn4Xqf8T5ywBgeA2zKkqG0TVveK/JJfDwrOQ1QhoKqIbcoO8eP1iFs2x7p8jq1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+UAQlFeJK6ZKN1L4y47pDf8xF9+Qz9v5CGI9xgndbcgyksW2JWBUX2+nXk" crossorigin="anonymous"></script>
+</body>
+</html>

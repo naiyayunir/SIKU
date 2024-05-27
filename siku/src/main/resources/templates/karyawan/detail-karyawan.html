@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Employee Details</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .card-container {
+            margin: auto;
+            width: 80%;
+            padding: 20px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #eeeeef;
+            color: #3c3f61;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .h2 {
+            text-align: center;
+            color: #3c3f61;
+            font-weight: bold;
+        }
+
+    
+        .form-label {
+            font-weight: 500;
+        }
+    
+        .btn-edit {
+            background-color: #3c3f61;
+            color: #ffffff;
+            border-color: #3c3f61;
+            padding: 10px 30px;
+            margin-right: 10px;
+        }
+
+        .btn-edit:hover {
+            background-color: #212529; /* Darker shade of the original background color */
+            color: #ffffff; /* White text color */
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            padding: 10px 30px;
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+    
+        /* .navbar {
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+    
+        .form-group {
+            margin-bottom: 15px; 
+        }
+        */
+
+        .form-group {
+            margin-bottom: 15px; 
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn {
+            margin-top: 10px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /*
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -5px;
+            margin-left: -5px;
+        }
+    
+        .form-group {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding-right: 5px;
+            padding-left: 5px;
+        } */
+    
+        /* .id-field,
+        .address-field {
+            width: 100% - 44px;
+        } */
+
+
+
+    .address-field {
+        margin-bottom: 20px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .layout_padding {
+            padding: 30px 0;
+        }
+
+        .layout_padding-top {
+            padding-top: 30px;
+        }
+
+        .layout_padding-bottom {
+            padding-bottom: 30px;
+        }
+
+        .layout_margin-top {
+            margin-top: 5px;
+        }
+
+        .layout_margin-bottom {
+            margin-bottom: 5px;
+        }
+
+        .left-top-corner {
+            position: absolute;
+            top: 12%; /* Adjust based on your layout */
+            left: 5%; /* Adjust based on your layout */
+            /* z-index: 1000; Ensure it appears above other elements */
+        }
+
+
+        .left-top-corner .btn-back {
+            background-color: #f8f9fa; 
+            color: #3c3f61; 
+            padding: 8px 12px; 
+            border-radius: 5px;
+            text-decoration: none; 
+            transition: background-color 0.3s, color 0.3s; 
+        }
+
+        .left-top-corner .btn-back:hover {
+            background-color: #f8f9fa; 
+            color: #eeeeef; 
+        }
+    
+    </style>
+</head>
+
+<body>
+
+<div th:if="${user != null && (user.role == 'hr' || user.role =='admin')}"></div>
+
+<div th:switch="${user.role}">
+    <div th:case="'hr'">
+        <nav th:replace="~{fragments/hr_navbar :: hr_navbar}"></nav>
+    </div>
+    <div th:case="'executive'">
+        <nav th:replace="~{fragments/executive_navbar :: executive_navbar}"></nav>
+    </div>
+    <div th:case="'admin'">
+        <nav th:replace="~{fragments/admin_navbar :: admin_navbar}"></nav>
+    </div>
+</div>
+
+
+<div class="card-container layout_padding-top layout_padding-bottom layout_margin-top layout_margin-bottom">
+    <div class="left-top-corner">
+        <a type="button" class="btn btn-back btn-md" href="/karyawan/viewall"><i class="fas fa-chevron-left"></i></a>
+    </div>
+    <div class="card">
+        <div class="card-header text-center">
+            <h2 th:text="${karyawan.nama_depan + ' ' + karyawan.nama_belakang + ' Details'}"></h2>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="form-group">
+                    <label for="id" class="form-label">ID:</label>
+                    <input type="text" class="form-control" id="id" th:value="${karyawan.id}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstName" class="form-label">First Name:</label>
+                    <input type="text" class="form-control" id="firstName" th:value="${karyawan.nama_depan}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" th:value="${karyawan.nama_belakang}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" class="form-control" id="username" th:value="${karyawan.username}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" th:value="${karyawan.email}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="address" class="form-label">Address:</label>
+                    <input type="text" class="form-control" id="address" th:value="${karyawan.alamat}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthdate" class="form-label">Birthdate:</label>
+                    <input type="text" class="form-control" id="birthdate" th:value="${#dates.format(#dates.create(karyawan.tanggal_lahir.year, karyawan.tanggal_lahir.monthValue, karyawan.tanggal_lahir.dayOfMonth), 'dd-MM-yyyy')}" disabled>
+                </div>                
+
+                <div class="form-group">
+                    <label for="birthplace" class="form-label">Birthplace:</label>
+                    <input type="text" class="form-control" id="birthplace" th:value="${karyawan.tempat_lahir}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="role" class="form-label">Role:</label>
+                    <input type="text" class="form-control" id="role" th:value="${karyawan.role}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="statusKaryawan" class="form-label">Employee Status:</label>
+                    <input type="text" class="form-control" id="statusKaryawan" th:value="${karyawan.status_karyawan ? 'Aktif' : 'Tidak Aktif'}" readonly disabled>
+                </div>
+
+                <div th:if="${karyawan.role == 'operational'}" class="text-right mb-3">
+                    <a th:href="@{/karyawan/performance/{id}(id=${karyawan.id})}" class="btn btn-link">See Performance</a>
+                </div>
+
+                <div class="text-right">
+                    <th:block th:if="${user.role == 'hr' || user.role == 'admin'}">
+                        <a th:href="@{/karyawan/edit/{id}(id=${karyawan.id})}" class="btn btn-edit" style="background-color: #3c3f61; color: #ffffff;">Edit</a>
+                    </th:block>
+                    <a th:href="@{/karyawan/viewall}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- tambah ini -->
+<div th:if="${successMessage}" class="modal fade" id="successModalEditStatus" tabindex="-1" role="dialog" aria-labelledby="successModalLabelEditStatus" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="color: black;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabelEditStatus">Success</h5>
+            </div>
+            <div class="modal-body">
+                <p th:text="${successMessage}"></p>
+            </div>
+            <div class="modal-footer">
+                <span>Click anywhere to close</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:if="${successMessage}">
+    $(document).ready(function() {
+        $('#successModalEditStatus').modal('show');
+    });
+</script>
+
+<!-- sampe  sini -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-4+qn4Xqf8T5ywBgeA2zKkqG0TVveK/JJfDwrOQ1QhoKqIbcoO8eP1iFs2x7p8jq1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+UAQlFeJK6ZKN1L4y47pDf8xF9+Qz9v5CGI9xgndbcgyksW2JWBUX2+nXk" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        var url = window.location.href;
+        if (url.includes('success=status')) {
+            $('#statusSuccessModal').modal('show');
+        }
+    });
+
+    $('#statusSuccessModal').on('hidden.bs.modal', function (e) {
+        console.log('Modal ditutup');
+    });
+</script>
+</body>
+
+<div th:unless="${user != null && (user.role == 'hr' || user.role =='admin')}">
+    <script th:inline="javascript">
+            /*<![CDATA[*/
+            window.location.replace('/no-access');
+            /*]]>*/
+    </script>
+</div>
+</html>

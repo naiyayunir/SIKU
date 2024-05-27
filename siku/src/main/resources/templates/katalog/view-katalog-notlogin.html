@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Product Detail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+
+    <!-- Include additional styles -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .image-card {
+            /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+            margin-bottom: 20px;
+        }
+
+        .image-card img {
+            max-width: 40%;
+            /* Adjust the image width as needed */
+            height: auto;
+            margin-left: 250px;
+            /* Move the image to the right */
+            margin-right: 20px;
+            /* Adjust the right margin as needed */
+        }
+
+        .card-container {
+            margin: auto;
+            width: 80%;
+            padding: 20px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+        }
+
+        .card-text {
+            color: #495057;
+        }
+
+        .card-header {
+            background-color: #eeeeef;
+            color: #3c3f61;
+        }
+        
+        .btn-back {
+            background-color: #3c3f61;
+            color: #fff;
+        }
+
+        .description-card {
+            background-color: #ffffff;
+            /* Set a white background for the card */
+            /* padding: 20px; */
+            /* Add padding to the card */
+            /* border-radius: 10px; */
+            /* Add border radius to the card */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Add shadow to the card */
+        }
+
+        .layout_padding {
+            padding: 30px 0;
+        }
+
+        .layout_padding-top {
+            padding-top: 30px;
+        }
+
+        .layout_padding-bottom {
+            padding-bottom: 30px;
+        }
+
+        .layout_margin-top {
+            margin-top: 5px;
+        }
+
+        .layout_margin-bottom {
+            margin-bottom: 5px;
+        }
+
+        .left-top-corner {
+            position: absolute;
+            top: 12%; /* Adjust based on your layout */
+            left: 5%; /* Adjust based on your layout */
+            /* z-index: 1000; Ensure it appears above other elements */
+        }
+
+        .left-top-corner .btn-back {
+            background-color: #f8f9fa; /* Background color */
+            color: #3c3f61; /* Text color */
+            padding: 8px 12px; /* Button padding */
+            border-radius: 5px; /* Button corner shape */
+            text-decoration: none; /* Remove underline */
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition for background color and text color */
+        }
+
+        .left-top-corner .btn-back:hover {
+            background-color: #f8f9fa; /* Background color on hover */
+            color: #eeeeef; /* Text color on hover */
+        }
+        .text-center.m-3 a.btn-back {
+            margin-top: 40px; /* Add margin top */
+        }
+ 
+    </style>
+</head>
+
+<body>
+    <div th:if="${user != null}">
+        <div th:switch="${user.role}">
+            <div th:case="'hr'">
+                <nav th:replace="~{fragments/hr_navbar :: hr_navbar}"></nav>
+            </div>
+            <div th:case="'executive'">
+                <nav th:replace="~{fragments/executive_navbar :: executive_navbar}"></nav>
+            </div>
+            <div th:case="'admin'">
+                <nav th:replace="~{fragments/admin_navbar :: admin_navbar}"></nav>
+            </div>
+            <div th:case="'operational'">
+                <nav th:replace="~{fragments/operational_navbar :: operational_navbar}"></nav>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${user != null}">
+        <nav th:replace="~{fragments/guest_navbar :: guest_navbar}"></nav>
+    </div>
+    <div class="card-container layout_padding-top layout_padding-bottom layout_margin-top layout_margin-bottom">
+        <div class="left-top-corner">
+            <a type="button" class="btn btn-back btn-md" href="/katalog"><i class="fas fa-chevron-left"></i></a>
+        </div>
+        <div class="card">
+            <!-- <div class="card-body description-card-body"> -->
+                <div class="card-header text-center">
+                    <h2>Detail Katalog</h2>
+                </div>
+            <div class="card-body">
+                <div class="row align-items-start mb-4">
+                    <!-- Image Column -->
+                    <div class="col-md-6">
+                        <div class="image-card">
+                            <!--<img class="card-img-top" alt="Katalog Image"
+                                th:src="'data:/image/jpg;base64,' + ${katalog.image}">-->
+                            <img alt="" th:src="@{/images/{imageName}(imageName=${katalog.image})}" />
+                        </div>
+                    </div>
+                    <!-- Description Column -->
+                    <div class="col-md-6">
+                        <h4 class="mb-3 card-title" th:text="${katalog.namaProduct}"></h4>
+                        <p class="card-text">
+                            <span th:text="'ID: ' + ${katalog.idProduct}" hidden></span>
+                        </p>
+                        <p class="card-text" th:text="'Deskripsi: ' + ${katalog.deskripsi}"></p>            
+                        <p class="card-text" th:text="'Harga: Rp ' + ${katalog.harga}"></p>
+                        <p class="card-text" th:text="'kategori: ' + ${katalog.kategori.namaKategori}"></p>
+                    </div>
+                    <div class="text-center m-3">
+                        <a type="button" class="btn btn-back btn-md" href="/katalog">Semua Katalog</a>
+                    </div>
+                </div>
+            </div>
+        <!-- </div> -->
+    </div>
+</body>
+
+</html>

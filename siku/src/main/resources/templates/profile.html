@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Account Settings</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .card-container {
+            margin: auto;
+            width: 80%;
+            padding: 20px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #eeeeef;
+            color: #3c3f61;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .alert-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .alert {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .alert .row {
+            align-items: center;
+        }
+
+        .alert .col-10 {
+            padding-right: 0;
+        }
+
+        .alert .col-2 {
+            text-align: right;
+            padding-left: 0;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+        .btn-edit {
+            background-color: #3c3f61;
+            color: #ffffff;
+            border-color: #3c3f61;
+            padding: 10px 30px;
+            margin-right: 10px;
+        }
+
+        .btn-edit:hover {
+            background-color: #525663;
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            padding: 10px 30px;
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+
+        .layout_padding {
+            padding: 30px 0;
+        }
+
+        .layout_padding-top {
+            padding-top: 30px;
+        }
+
+        .layout_padding-bottom {
+            padding-bottom: 30px;
+        }
+
+        .layout_margin-top {
+            margin-top: 5px;
+        }
+
+        .layout_margin-bottom {
+            margin-bottom: 5px;
+        }
+
+        .left-top-corner {
+            position: absolute;
+            top: 13%;
+            left: 1%;
+        }
+
+
+        .left-top-corner .btn-back {
+            background-color: #f8f9fa; 
+            color: #3c3f61; 
+            padding: 8px 12px; 
+            border-radius: 5px; 
+            text-decoration: none; 
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .left-top-corner .btn-back:hover {
+            background-color: #f8f9fa; 
+            color: #eeeeef; 
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div th:switch="${user.role}">
+        <div th:case="'hr'">
+            <nav th:replace="~{fragments/hr_navbar :: hr_navbar}"></nav>
+        </div>
+        <div th:case="'executive'">
+            <nav th:replace="~{fragments/executive_navbar :: executive_navbar}"></nav>
+        </div>
+        <div th:case="'admin'">
+            <nav th:replace="~{fragments/admin_navbar :: admin_navbar}"></nav>
+        </div>
+        <div th:case="'operational'">
+            <nav th:replace="~{fragments/operational_navbar :: operational_navbar}"></nav>
+        </div>
+    </div>
+    <!-- <div th:if="${user != null && (user.role == 'hr' || user.role =='admin' || user.role =='executive' || user.role =='operational')}"></div> -->
+    <div class="left-top-corner">
+        <a type="button" class="btn btn-back btn-md" href="/"><i class="fas fa-chevron-left"></i></a>
+    </div>    
+    <div class="container layout_padding-top layout_padding-bottom layout_margin-top layout_margin-bottom">
+        <!-- <div class="row justify-content-center"> -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Account Settings</h2>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">First Name:</label>
+                            <input type="text" class="form-control" id="firstName" th:value="${user.nama_depan}" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Last Name:</label>
+                            <input type="text" class="form-control" id="lastName" th:value="${user.nama_belakang}" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username:</label>
+                            <input type="text" class="form-control" id="username" th:value="${user.username}" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" class="form-control" id="email" th:value="${user.email}" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Phone Number:</label>
+                            <input type="tel" class="form-control" id="phoneNumber" th:value="${user.nomor_hp}" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role:</label>
+                            <input type="text" class="form-control" id="role" th:value="${user.role}" disabled>
+                        </div>
+                        <div class="text-right">
+                            <a th:href="@{/edit-profile}" class="btn btn-edit" >Edit</a>
+                            <a href="/" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <!-- </div> -->
+    </div>
+    <div class="modal fade" id="passwordSuccessModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Success</h5>
+                </div>
+                <div class="modal-body">
+                    Your password has been changed successfully.
+                </div>
+                <div class="modal-footer">
+                    <span>Click anywhere to close</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="profileSuccessModal" tabindex="-1" aria-labelledby="editSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSuccessModalLabel">Success</h5>
+                </div>
+                <div class="modal-body">
+                    Profile updated successfully.
+                </div>
+                <div class="modal-footer">
+                    <span>Click anywhere to close</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div th:unless="${user != null && (user.role == 'hr' || user.role =='admin' || user.role =='executive' || user.role =='operational')}"></div>
+    <script th:inline="javascript">
+            /*<![CDATA[*/
+            window.location.replace('/no-access');
+            /*]]>*/
+    </script>
+    </div> -->
+    
+    
+    <script>
+        $(document).ready(function() {
+            var url = window.location.href;
+            
+            if (url.includes('success=profile')) {
+                $('#profileSuccessModal').modal('show');
+            } else if (url.includes('success=password')) {
+                $('#passwordSuccessModal').modal('show');
+            }
+        });
+    </script>
+
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-4+qn4Xqf8T5ywBgeA2zKkqG0TVveK/JJfDwrOQ1QhoKqIbcoO8eP1iFs2x7p8jq1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+UAQlFeJK6ZKN1L4y47pDf8xF9+Qz9v5CGI9xgndbcgyksW2JWBUX2+nXk" crossorigin="anonymous"></script>
+</body>
+
+</html>

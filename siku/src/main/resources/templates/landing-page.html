@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="">
+
+  <title> SIKU </title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link href="css/style.css" rel="stylesheet" />
+  <link href="css/responsive.css" rel="stylesheet" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+</head>
+
+<body>
+
+    <div th:if="${user != null}">
+        <div th:switch="${user.role}">
+            <div th:case="'hr'">
+                <nav th:replace="~{fragments/hr_navbar :: hr_navbar}"></nav>
+            </div>
+            <div th:case="'executive'">
+                <nav th:replace="~{fragments/executive_navbar :: executive_navbar}"></nav>
+            </div>
+            <div th:case="'admin'">
+                <nav th:replace="~{fragments/admin_navbar :: admin_navbar}"></nav>
+            </div>
+            <div th:case="'operational'">
+                <nav th:replace="~{fragments/operational_navbar :: operational_navbar}"></nav>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${user != null}">
+        <nav th:replace="~{fragments/guest_navbar :: guest_navbar}"></nav>
+    </div>
+
+  <div class="hero_area">
+
+    <div class="hero_bg_box">
+      <img src="images/hero-bg.png" alt="">
+    </div>
+
+    <!-- about section -->
+    <section id=about class="about_section ">
+      <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="container ">
+              <div class="row">
+                <div class="col-md-7">
+                  <div class="detail-box">
+                    <h1>
+                      About Us                    
+                    </h1>
+                    <p>
+                      Incorporated in 2021, Griya Bina Sejahtera operates in the healthcare sector, specializing in the sales of medical devices and the provision of healthcare clinic management services. The company is poised to serve as a distribution partner for health equipment sourced from international manufacturers. Our product portfolio encompasses a variety of brands, with a particular focus on the procurement of medical devices, specifically in the fields of Surgery, Obstetrics and Gynecology (Obgyn), and Anesthesia.
+                    </p>
+                    <div class="btn-box">
+                      <a href="#services" class="btn1">
+                        Discover More
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item ">
+            <div class="container ">
+              <div class="row">
+                <div class="col-md-7">
+                  <div class="detail-box">
+                    <h1>
+                      Delivering Quality Healthcare Solutions for All                    </h1>
+                    </h1>
+                    <p>
+                    Our vision is to be a global leader in transforming
+                    healthcare through innovative and sustainable
+                    medical solutions. We aspire to create a healthier
+                    world by pioneering advancements in medical
+                    technology, fostering a culture of continuous
+                    improvement, and ensuring accessibility to
+                    cutting-edge healthcare solutions for
+                    communities worldwide.                    
+                  </p>
+                    <div class="btn-box">
+                      <a href="#services" class="btn1">
+                        Discover More
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="container ">
+              <div class="row">
+                <div class="col-md-7">
+                  <div class="detail-box">
+                    <h1>
+                      We Are Your Best Partner
+                    </h1>
+                    <p>
+                      At <strong>Griya Bina Sejahtera</strong>, we're more than a supplier, we're your
+                      best partner in healthcare innovation. Our commitment goes
+                      beyond delivering exceptional products and services; it's about
+                      forging lasting relationships built on trust, innovation, and mutual
+                      success.
+                      Choose <strong>Bina Sejahtera</strong> as your strategic ally, where
+                      collaboration meets excellence. Your success is our success, and
+                      we're here to ensure it every step of the way.                    </p>
+                    <div class="btn-box">
+                      <a href="#services" class="btn1">
+                        Discover More
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ol class="carousel-indicators">
+          <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
+          <li data-target="#customCarousel1" data-slide-to="1"></li>
+          <li data-target="#customCarousel1" data-slide-to="2"></li>
+        </ol>
+      </div>
+
+    </section>
+    <!-- end about section -->
+  </div>
+
+  <!-- services section -->
+  <section id="services" class="services_section layout_padding">
+    <div class="services_container">
+        <div class="container ">
+            <div class="heading_container heading_center">
+                <h2>
+                    Our Services
+                </h2>
+                <p>
+                    The company provides exceptional services to customers <strong>throughout Indonesia,</strong> tailored to
+                    meet the unique needs of individuals, families, and businesses. They offer affordable and
+                    reliable options for transportation, logistics, and other aspects of modern life. The team
+                    is dedicated to serving diverse clientele and supporting communities. Contact them today
+                    to learn more.
+                </p>
+            </div>
+            <div class="row justify-content-center" style="margin-top: 30px;"> <!-- Add margin-top for spacing -->
+                <div class="col-md-5">
+                    <div class="card shadow rounded"> <!-- Add shadow and rounded edges -->
+                        <div class="card-header text-center" style="background-color: #3C3F61; color: #ffffff; font-weight: bold;">
+                            NATIONWIDE PRESENCE IN INDONESIA
+                        </div>
+                        <div class="card-body">
+                            <ul style="color:#3C3F61">
+                                <li>Strategic Accessibility</li>
+                                <li>Local Expertise, Global Standards</li>
+                                <li>Community-Centric Approach</li>
+                                <li>Reliable Network</li>
+                                <li>Efficiency in Delivery</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="card shadow rounded"> <!-- Add shadow and rounded edges -->
+                        <div class="card-header text-center" style="background-color: #3C3F61; color: #ffffff; font-weight: bold;">
+                            COMPREHENSIVE SERVICE NETWORK
+                        </div>
+                        <div class="card-body">
+                            <ul style="color: #3C3F61">
+                                <li>24/7 Support from Head Office</li>
+                                <li>Staffed by Top Industry Professionals</li>
+                                <li>End-to-End Solutions</li>
+                                <li>Unparalleled Commitment</li>
+                                <li>One-Stop Shop for Excellence</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <!-- end services section -->
+
+  <!-- systems section -->
+
+  <section id=systems class="systems_section layout_padding">
+    <div class="systems_container">
+      <div class="container ">
+        <div class="heading_container heading_center">
+          <h2>
+            Our Systems
+          </h2>
+          <p>
+            We offer a comprehensive system, starting from conceptualization and design to manufacturing and post-market support. This provides an end-to-end solution for seamless project execution, ensuring that every step is carried out accurately and efficiently.          </p>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="box ">
+              <div class="img-box">
+                <img src="images/systems-1.png" alt="">
+              </div>
+              <div class="detail-box">
+                <h5>
+                    Discovery & Strategy
+                </h5>
+                <p>
+                    We ensure seamless logistics and timely distribution, supporting healthcare providers with prompt
+                    access to critical medical devices.                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="box ">
+              <div class="img-box">
+                <img src="images/systems-2.png" alt="">
+              </div>
+              <div class="detail-box">
+                <h5>
+                  Quality Assurance
+                </h5>
+                <p>
+                    Strict quality control measures are embedded at every stage, guaranteeing products that meet and
+                    exceed industry standards.                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="box ">
+              <div class="img-box">
+                <img src="images/systems-3.png" alt="">
+              </div>
+              <div class="detail-box">
+                <h5>
+                    Client-Centric Collaboration & Innovation
+                </h5>
+                <p>
+                    We prioritize open communication and collaboration also involves clients in decision-making where
+                    innovative solutions meet their needs.                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="box ">
+              <div class="img-box">
+                <img src="images/systems-4.png" alt="">
+              </div>
+              <div class="detail-box">
+                <h5>
+                  End-to-End Integration
+                </h5>
+                <p>
+                    From conceptualization and design to manufacturing and post-market support, our system provides an
+                    end-to-end solution for seamless project execution.                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end systems section -->
+
+  <!-- doctor section -->
+  <section id="products" class="products_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2 style="color: white;">Our Products</h2>
+            <p class="col-md-10 mx-auto px-0" style="color: white;">
+                Griya Bina Sejahtera is offering a wide range of high-quality products, from any medical devices from around the world with excellent customer service. The products are carefully selected to meet the customers' standards, and we are always ready to assist with your needs.
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+                <a th:href="@{/katalog/filter(kategoriId=1)}">
+                    <div class="box">
+                        <div class="img-box">
+                          <a th:href="@{/katalog/filter(kategoriId=1)}">
+                            <img src="images/products-1.png" alt="">
+                          </a>
+                        </div>
+                        <div class="detail-box">
+                          <a th:href="@{/katalog/filter(kategoriId=1)}">
+                            <h5>Surgery</h5>
+                          </a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <a th:href="@{/katalog/filter(kategoriId=2)}">
+                    <div class="box">
+                        <div class="img-box">
+                          <a th:href="@{/katalog/filter(kategoriId=2)}">
+                            <img src="images/products-2.png" alt="">
+                          </a>
+                        </div>
+                        <div class="detail-box">
+                          <a th:href="@{/katalog/filter(kategoriId=2)}">
+                              <h5>Urology</h5>
+                          </a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <a th:href="@{/katalog/filter(kategoriId=3)}">
+                    <div class="box">
+                        <div class="img-box">
+                          <a th:href="@{/katalog/filter(kategoriId=3)}">
+                            <img src="images/products-3.png" alt="">
+                            </a>
+                        </div>
+                        <div class="detail-box">
+                          <a th:href="@{/katalog/filter(kategoriId=3)}">
+                            <h5>Anesthesia</h5>
+                          </a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <a th:href="@{/katalog/filter(kategoriId=4)}">
+                    <div class="box">
+                        <div class="img-box">
+                          <a th:href="@{/katalog/filter(kategoriId=4)}">
+                            <img src="images/products-4.png" alt="">
+                            </a>
+                        </div>
+                        <div class="detail-box">
+                          <a th:href="@{/katalog/filter(kategoriId=4)}">
+                              <h5>Obstetrics & Gynecology</h5>
+                          </a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="btn-box">
+          <a class="btn btn-outline-secondary px-4" th:href="@{/katalog}" style="color: #3C3F61; border-color: #ffffff;">
+              <span style="color: white;">View All</span>
+          </a>
+      </div>
+    </div>
+</section>
+
+<!-- end products section --> 
+
+
+ <!-- client section -->
+  <section id="client" class="client_section layout_padding-bottom">
+    <div class="container">
+      <div class="heading_container heading_center ">
+        <h2>
+          <strong> What They Say </strong>
+        </h2>
+      </div>
+      <div id="carouselExample2Controls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="row">
+              <div class="col-md-11 col-lg-10 mx-auto">
+                <div class="box">
+                  <div class="img-box">
+                    <img src="images/testi-1.png" alt="" />
+                  </div>
+                  <div class="detail-box">
+                    <div class="name">
+                      <h6>
+                        Dr. Sarah Almiranda
+                      </h6>
+                      <p>
+                        Sunrise Healthcare Clinic
+                      <p>
+                    </div>
+                    <p>
+                      Since partnering with Griya Bina Sejahtera, our healthcare clinic has seen significant improvements in efficiency and patient care. Their expertise in medical device sales and clinic management services has allowed us to focus more on delivering quality healthcare to our patients. We highly recommend their services.
+                    </p>
+                    <i class="bi bi-chat-left-quote" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="row">
+              <div class="col-md-11 col-lg-10 mx-auto">
+                <div class="box">
+                  <div class="img-box">
+                    <img src="images/testi-2.png" alt="" />
+                  </div>
+                  <div class="detail-box">
+                    <div class="name">
+                      <h6>
+                        Risma Rustanti
+                      </h6>
+                      <p>
+                        MedTech Solutions Inc.
+                      <p>
+                    </div>
+                    <p>
+                      As a manufacturer of medical devices, collaborating with Griya Bina Sejahtera has been a game-changer for us. Their professionalism and dedication to sourcing top-quality health equipment from international suppliers have helped us expand our market reach. We look forward to continued success with Griya Bina Sejahtera as our distribution partner.
+                    </p>
+                    <i class="bi bi-chat-left-quote" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="row">
+              <div class="col-md-11 col-lg-10 mx-auto">
+                <div class="box">
+                  <div class="img-box">
+                    <img src="images/testi-3.png" alt="" />
+                  </div>
+                  <div class="detail-box">
+                    <div class="name">
+                      <h6>
+                        Azkadina B. Hasyim
+                      </h6>
+                      <p>
+                        City Hospital
+                      <p>
+                    </div>
+                    <p>
+                      Griya Bina Sejahtera has been invaluable in helping us streamline our procurement process for medical devices. Their extensive product portfolio, particularly in Surgery, Obstetrics and Gynecology (Obgyn), and Anesthesia, has allowed us to find the right equipment for our hospital. Their professionalism and reliability make them our preferred partner.
+                    </p>
+                    <i class="bi bi-chat-left-quote" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel_btn-container">
+          <a class="carousel-control-prev" href="#carouselExample2Controls" role="button" data-slide="prev">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExample2Controls" role="button" data-slide="next">
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>  
+
+  <!-- end client section -->
+
+    <!-- footer section -->
+    <footer>
+      <div class="container">
+          <div class="footer-content">
+              <h2 style="font-weight: bold;">Contact Us</h2>
+              <p class="contact-info">
+                  <span><i class="bi bi-geo-alt-fill"></i> JL. Babakan Jeruk IV No.17 Kel. Sukagalih, Kec. Sukajadi, Kota Bandung</span>
+                  <span><i class="bi bi-telephone-fill"></i> +62 812-2316-832 (Astri)</span>
+                  <span><i class="bi bi-envelope-fill"></i> griyabinasejahtera@gmail.com</span>
+              </p>
+          </div>
+      </div>
+  </footer>
+  <!-- footer section -->
+
+  <!-- end client section -->
+  <div class="modal fade" id="statusSuccessModal" tabindex="-1" role="dialog" aria-labelledby="statusSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="color: black;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusSuccessModalLabel">Success</h5>
+            </div>
+            <div class="modal-body">
+                User successfully logged in.
+            </div>
+            <div class="modal-footer">
+                <span>Click anywhere to close</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="statusSuccessModalRegister" tabindex="-1" role="dialog" aria-labelledby="statusSuccessModalLabelRegister" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="color: black;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusSuccessModalLabelRegister">Success</h5>
+            </div>
+            <div class="modal-body">
+                Successfully registered an employee.
+            </div>
+            <div class="modal-footer">
+                <span>Click anywhere to close</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <script>
+    $(document).ready(function() {
+        var url = window.location.href;
+        if (url.includes('loginUser')) {
+            $('#statusSuccessModal').modal('show');
+        }
+    });
+
+    $('#statusSuccessModal').on('hidden.bs.modal', function (e) {
+        console.log('Modal ditutup');
+    });
+    </script>
+
+    <script>
+    $(document).ready(function() {
+        var url = window.location.href;
+        if (url.includes('registerUser')) {
+            $('#statusSuccessModalRegister').modal('show');
+        }
+    });
+
+    $('#statusSuccessModal').on('hidden.bs.modal', function (e) {
+        console.log('Modal ditutup');
+    });
+    </script>
+
+  <!-- jQery -->
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <!-- popper js -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <!-- bootstrap js -->
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <!-- owl slider -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <!-- custom js -->
+  <script type="text/javascript" src="js/custom.js"></script>
+  <!-- Google Map -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+  </script>
+  <!-- End Google Map -->
+
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <script type="text/javascript" src="js/custom.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        var url = window.location.href;
+        if (url.includes('loginUser')) {
+            $('#statusSuccessModal').modal('show');
+        }
+    });
+
+    $('#statusSuccessModal').on('hidden.bs.modal', function (e) {
+        console.log('Modal ditutup');
+    });
+    </script>
+
+    <script>
+    $(document).ready(function() {
+        var url = window.location.href;
+        if (url.includes('registerUser')) {
+            $('#statusSuccessModalRegister').modal('show');
+        }
+    });
+
+    $('#statusSuccessModal').on('hidden.bs.modal', function (e) {
+        console.log('Modal ditutup');
+    });
+    </script>
+
+</body>
+
+</html>
